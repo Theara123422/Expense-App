@@ -1,8 +1,7 @@
 import express from 'express';
 import { config } from 'dotenv';
 import pool from './src/database/db_connection.js';
-import multer from 'multer';
-import { storage,fileFilter,fileSize } from './src/utils/image_handler.js';
+import authRoute from './src/routes/authenticationRoutes.js';
 config();
 const app = express();
 const port= process.env.port;
@@ -16,15 +15,9 @@ pool.getConnection((error,connection) => {
     console.log("Success connection");
     connection.release();
 })
+//authentication (public route)
+app.use('/auth', authRoute);
 
-//wrap up multer configuration
-const upload = multer({
-    storage,
-    fileFilter,
-    limits : {
-        fileSize
-    }
-})
 
 app.listen(port , () => {
     console.log(`Server is running on http://localhost:${port}`);

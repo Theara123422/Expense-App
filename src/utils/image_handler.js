@@ -1,15 +1,15 @@
 import multer from "multer";
 
-export const storage = multer.diskStorage({
+const storage = multer.diskStorage({
     destination : (request,file,callback) => {
         callback(null , './uploads')
     },
     filename : (request,file,callback) => {
-        callback(null , `${Date.now()} + '-' + ${file.originalname}`)
+        callback(null , `${Date.now()}-${file.originalname}`)
     }
 })
 
-export const fileFilter = (request,file,callback) => {
+const fileFilter = (request,file,callback) => {
     if(file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
         callback(null , true)
     }
@@ -18,4 +18,13 @@ export const fileFilter = (request,file,callback) => {
     }
 }
 
-export const fileSize = 1024 * 1024 * 2;
+const fileSize = 1024 * 1024 * 2;
+
+//wrap up multer configuration
+export const upload = multer({
+    storage,
+    fileFilter,
+    limits : {
+        fileSize
+    }
+})
