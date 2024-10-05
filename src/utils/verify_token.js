@@ -16,9 +16,9 @@ const verifyToken = (request,response,next) => {
                 message : "Token not verified"
             })
         }
+        request.user = result.username;
         next();
     })
-    
 }
 
 export default verifyToken;

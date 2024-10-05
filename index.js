@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import pool from './src/database/db_connection.js';
 import authRoute from './src/routes/authenticationRoutes.js';
 import verifyToken from './src/utils/verify_token.js';
+import userRouter from './src/routes/userRoutes.js';
 config();
 const app = express();
 const port= process.env.port;
@@ -18,6 +19,7 @@ pool.getConnection((error,connection) => {
 })
 //authentication (public route)
 app.use('/auth', authRoute);
+app.use('/user',userRouter)
 
 app.get('/' ,verifyToken, (request,response) => {
     response.send("Hello");
